@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Шестерочка: главная</title>
+</head>
+<body id="bg" style="background-image: url('{% static "background/12.jpg"%}'); background-size: cover;">
+     
+<div class="container mt-5">
+    <header class="header">
+    <div class="container">
+      <div class="header__inner" style="margin-top: -15px;">
+        <div class="header__logo"> <img src="{% static 'logo/anton2.jpg' %}" width="53" height="43" style="margin-top: -15px;"> Шестерочка: онлайн</div>
+
+       <nav class="nav" >
+          <a class="nav__link" href="{% url 'index' %}">Главная страница</a>
+          <a class="nav__link" href="{% url 'view_cart' %}">Корзина</a>
+        </nav> 
+      </div>
+  </header>
+    <h1 class="mb-4"></h1>
+
+    <div class="row" style="margin-top: 150px;">
+        {% for product in products %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">В наличии: {{ product.stock }} кг.</p>
+                        <p class="card-text">{{ product.price }} руб.</p>
+                        <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Добавить в корзину</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

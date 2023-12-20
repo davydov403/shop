@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Корзина</title>
+    <style>
+        body {
+            padding: 20px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        form {
+            display: flex;
+            align-items: center;
+        }
+
+        label {
+            margin-right: 10px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        a.btn {
+            margin-top: 10px;
+            display: block;
+            text-align: center;
+        }
+    </style>
+</head>
+<body id="bg" style="background-image: url('{% static "background/12.jpg"%}'); background-size: cover;">
+    <header class="header">
+        <div class="container">
+          <div class="header__inner" style="margin-top: -15px;">
+            <div class="header__logo"> <img src="{% static 'logo/anton2.jpg' %}" width="53" height="43" style="margin-top: -15px;"> Шестерочка: онлайн</div>
+    
+           <nav class="nav" >
+              <a class="nav__link" href="{% url 'index' %}">Главная страница</a>
+              <a class="nav__link" href="{% url 'view_cart' %}">Корзина</a>
+            </nav> 
+          </div>
+      </header>
+    <div class="container" style="margin-top: 90px;">
+        <h1></h1>
+        <div></div>
+        <ul >
+            {% for cart_item in cart_items %}
+                <li style="background-color: white;">
+                    <h5>{{ cart_item.product.name }}</h5>
+                    {% for product in products %}
+                    <img src="{{ product.image.url }}">
+                    {% endfor %}
+                    <p>Количество: {{ cart_item.count }}</p>
+                    <form method="post" action="{% url 'update_cart' cart_item.product.id %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <input type="number" name="count" value="{{ cart_item.count }}" min="1" max="{{ cart_item.product.stock }}" class="form-control">
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="margin-left: 15px; margin-bottom: 15px;">Обновить</button>
+                    </form>
+                    <a href="{% url 'remove_from_cart' cart_item.product.id %}" class="btn btn-danger">Удалить из корзины</a>
+                    <br></br>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <!-- Добавьте ссылку на страницу оформления заказа -->
+        <a href="{% url 'checkout' %}" class="btn btn-success">Перейти к оплате</a>
+    </div>
+
+    <!-- Подключаем скрипт Bootstrap (необходим для работы компонентов) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
